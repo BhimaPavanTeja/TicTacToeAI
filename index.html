@@ -191,6 +191,7 @@ const handleClick = (e) => {
 
     boardState[index] = 'X';
     e.target.innerText = 'X';
+    e.target.style.backgroundColor = 'rgb(250, 44, 44)';
 
     if (checkWin('X')) {
         setTimeout(() => alert('X wins!'), 100);
@@ -223,6 +224,7 @@ const restartGame = () => {
     boardState = ['', '', '', '', '', '', '', '', ''];
     cells.forEach(cell => {
         cell.innerText = '';
+        cell.style.backgroundColor = '';
     });
     currentPlayer = 'X';
 };
