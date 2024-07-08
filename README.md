@@ -7,8 +7,8 @@ This is a simple Tic Tac Toe game implemented using HTML, CSS, and JavaScript, w
 - Game reset functionality to start a new game.
 
 # H3 Magic Square
-` 8 1 6 `
-` 3 5 7 `
-` 4 9 2 `
+- ` 8 1 6 `
+- ` 3 5 7 `
+- ` 4 9 2 `
 
 *Enjoy playing Tic Tac Toe with our smart AI!*
