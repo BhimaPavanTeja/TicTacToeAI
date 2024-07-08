@@ -1,12 +1,12 @@
-# H2 Tic Tac Toe Game
+# Tic Tac Toe Game
 This is a simple Tic Tac Toe game implemented using HTML, CSS, and JavaScript, where an AI uses the magic square method to make strategic moves. The game allows a human player to compete against the AI, which makes moves to either win or block the player from winning.
 
-# H3 Features
+# Features
 - Interactive Tic Tac Toe game board.
 - AI opponent that uses the magic square strategy to determine its moves.
 - Game reset functionality to start a new game.
 
-# H3 Magic Square
+# Used Magic Square
 - ` 8 1 6 `
 - ` 3 5 7 `
 - ` 4 9 2 `
