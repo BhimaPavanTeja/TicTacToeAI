@@ -110,90 +110,103 @@
     }
 </style>
 <script>
-    const board = document.getElementById('board');
-    const cells = document.querySelectorAll('.cell');
-    const restartButton = document.getElementById('restart');
-    let boardState = ['', '', '', '', '', '', '', '', ''];
-    let currentPlayer = 'X';
-    const magicSquare = [
-        8, 1, 6,
-        3, 5, 7,
-        4, 9, 2
-    ];
+const board = document.getElementById('board');
+const cells = document.querySelectorAll('.cell');
+const restartButton = document.getElementById('restart');
+let boardState = ['', '', '', '', '', '', '', '', ''];
+let currentPlayer = 'X';
+const magicSquare = [
+    8, 1, 6,
+    3, 5, 7,
+    4, 9, 2
+];
 
-    const checkWin = (player) => {
-        const playerIndices = boardState.reduce((acc, cell, index) => {
-            if (cell === player) acc.push(index);
-            return acc;
-        }, []);
+const checkWin = (player) => {
+    const playerIndices = boardState.reduce((acc, cell, index) => {
+        if (cell === player) acc.push(index);
+        return acc;
+    }, []);
 
-        for (let i = 0; i < playerIndices.length; i++) {
-            for (let j = i + 1; j < playerIndices.length; j++) {
-                for (let k = j + 1; k < playerIndices.length; k++) {
-                    const sum = magicSquare[playerIndices[i]] + magicSquare[playerIndices[j]] + magicSquare[playerIndices[k]];
-                    if (sum === 15) return true;
-                }
+    for (let i = 0; i < playerIndices.length; i++) {
+        for (let j = i + 1; j < playerIndices.length; j++) {
+            for (let k = j + 1; k < playerIndices.length; k++) {
+                const sum = magicSquare[playerIndices[i]] + magicSquare[playerIndices[j]] + magicSquare[playerIndices[k]];
+                if (sum === 15) return true;
             }
         }
-        return false;
-    };
+    }
+    return false;
+};
 
-    const checkDraw = () => {
-        return boardState.every(cell => cell !== '');
-    };
+const checkDraw = () => {
+    return boardState.every(cell => cell !== '');
+};
 
-    const aiMove = () => {
-        const playerIndices = boardState.reduce((acc, cell, index) => {
-            if (cell === 'X') acc.push(index);
-            return acc;
-        }, []);
+const aiMove = () => {
+    const aiIndices = boardState.reduce((acc, cell, index) => {
+        if (cell === 'O') acc.push(index);
+        return acc;
+    }, []);
 
-        const aiIndices = boardState.reduce((acc, cell, index) => {
-            if (cell === 'O') acc.push(index);
-            return acc;
-        }, []);
-
-        for (let i = 0; i < playerIndices.length; i++) {
-            for (let j = i + 1; j < playerIndices.length; j++) {
-                const sum = magicSquare[playerIndices[i]] + magicSquare[playerIndices[j]];
-                const target = 15 - sum;
-                const targetIndex = magicSquare.indexOf(target);
-                if (targetIndex !== -1 && boardState[targetIndex] === '') {
-                    boardState[targetIndex] = 'O';
-                    cells[targetIndex].innerText = 'O';
-                    return;
-                }
+    for (let i = 0; i < aiIndices.length; i++) {
+        for (let j = i + 1; j < aiIndices.length; j++) {
+            const sum = magicSquare[aiIndices[i]] + magicSquare[aiIndices[j]];
+            const target = 15 - sum;
+            const targetIndex = magicSquare.indexOf(target);
+            if (targetIndex !== -1 && boardState[targetIndex] === '') {
+                boardState[targetIndex] = 'O';
+                cells[targetIndex].innerText = 'O';
+                return;
             }
         }
+    }
 
-        for (let i = 0; i < aiIndices.length; i++) {
-            for (let j = i + 1; j < aiIndices.length; j++) {
-                const sum = magicSquare[aiIndices[i]] + magicSquare[aiIndices[j]];
-                const target = 15 - sum;
-                const targetIndex = magicSquare.indexOf(target);
-                if (targetIndex !== -1 && boardState[targetIndex] === '') {
-                    boardState[targetIndex] = 'O';
-                    cells[targetIndex].innerText = 'O';
-                    return;
-                }
+    const playerIndices = boardState.reduce((acc, cell, index) => {
+        if (cell === 'X') acc.push(index);
+        return acc;
+    }, []);
+
+    for (let i = 0; i < playerIndices.length; i++) {
+        for (let j = i + 1; j < playerIndices.length; j++) {
+            const sum = magicSquare[playerIndices[i]] + magicSquare[playerIndices[j]];
+            const target = 15 - sum;
+            const targetIndex = magicSquare.indexOf(target);
+            if (targetIndex !== -1 && boardState[targetIndex] === '') {
+                boardState[targetIndex] = 'O';
+                cells[targetIndex].innerText = 'O';
+                return;
             }
         }
+    }
 
-        const emptyIndices = boardState.map((cell, index) => cell === '' ? index : null).filter(index => index !== null);
-        const randomIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-        boardState[randomIndex] = 'O';
-        cells[randomIndex].innerText = 'O';
-    };
+    const emptyIndices = boardState.map((cell, index) => cell === '' ? index : null).filter(index => index !== null);
+    const randomIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+    boardState[randomIndex] = 'O';
+    cells[randomIndex].innerText = 'O';
+};
 
-    const handleClick = (e) => {
-        const index = e.target.dataset.index;
-        if (boardState[index] !== '' || currentPlayer !== 'X') return;
+const handleClick = (e) => {
+    const index = e.target.dataset.index;
+    if (boardState[index] !== '' || currentPlayer !== 'X') return;
 
-        boardState[index] = 'X';
-        e.target.innerText = 'X';
+    boardState[index] = 'X';
+    e.target.innerText = 'X';
 
-        if (checkWin('X')) {
-            setTimeout(() => alert('X wins!'), 100);
+    if (checkWin('X')) {
+        setTimeout(() => alert('X wins!'), 100);
+        return;
+    }
+
+    if (checkDraw()) {
+        setTimeout(() => alert('It\'s a draw!'), 100);
+        return;
+    }
+
+    currentPlayer = 'O';
+    setTimeout(() => {
+        aiMove();
+        if (checkWin('O')) {
+            setTimeout(() => alert('O wins!'), 100);
             return;
         }
 
@@ -202,33 +215,20 @@
             return;
         }
 
-        currentPlayer = 'O';
-        setTimeout(() => {
-            aiMove();
-            if (checkWin('O')) {
-                setTimeout(() => alert('O wins!'), 100);
-                return;
-            }
-
-            if (checkDraw()) {
-                setTimeout(() => alert('It\'s a draw!'), 100);
-                return;
-            }
-
-            currentPlayer = 'X';
-        }, 500);
-    };
-
-    const restartGame = () => {
-        boardState = ['', '', '', '', '', '', '', '', ''];
-        cells.forEach(cell => {
-            cell.innerText = '';
-        });
         currentPlayer = 'X';
-    };
+    }, 500);
+};
 
-    cells.forEach(cell => cell.addEventListener('click', handleClick));
-    restartButton.addEventListener('click', restartGame);
+const restartGame = () => {
+    boardState = ['', '', '', '', '', '', '', '', ''];
+    cells.forEach(cell => {
+        cell.innerText = '';
+    });
+    currentPlayer = 'X';
+};
+
+cells.forEach(cell => cell.addEventListener('click', handleClick));
+restartButton.addEventListener('click', restartGame);
 
 </script>
 
